@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+smartreco.db
+chroma_db/
+.venv/
+venv/
+*.log
+
+# Unrelated local tooling, not part of the SmartReco project
+install.cmd

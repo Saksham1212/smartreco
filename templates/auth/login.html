@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Log In — SmartReco{% endblock %}
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card">
+    <h1 class="auth-title">Welcome back</h1>
+    <p class="auth-subtitle">Log in to see your personalized recommendations.</p>
+    <form action="/auth/login" method="post" class="auth-form">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autocomplete="email">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required minlength="8" autocomplete="current-password">
+      <button type="submit" class="btn btn-accent btn-block">Log In</button>
+    </form>
+    <p class="auth-switch">Don't have an account? <a href="/register">Sign up</a></p>
+  </div>
+</section>
+{% endblock %}

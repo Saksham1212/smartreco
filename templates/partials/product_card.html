@@ -1,0 +1,15 @@
+<a href="/products/{{ product.id }}" class="product-card" data-product-id="{{ product.id }}" data-search-query="{{ query|default('') }}" style="--glow: {{ product.category|category_color }}66; --i: {{ loop.index0 if loop is defined else 0 }};">
+  <div class="product-thumb" {% if not product.thumbnail_url %}style="background: linear-gradient(135deg, {{ product.category|category_color }}, #0f172a);"{% endif %}>
+    {% if product.thumbnail_url %}<img src="{{ product.thumbnail_url }}" alt="{{ product.title }}" loading="lazy">{% endif %}
+    <span class="badge badge-difficulty badge-{{ product.difficulty_level }}">{{ product.difficulty_level }}</span>
+  </div>
+  <div class="product-card-body">
+    <span class="badge badge-category" style="background-color: {{ product.category|category_color }}22; color: {{ product.category|category_color }}; border-color: {{ product.category|category_color }}55;">{{ product.category }}</span>
+    <h3 class="product-title">{{ product.title }}</h3>
+    <p class="product-instructor">{{ product.instructor_name }} &middot; {{ product.duration_hours }}h</p>
+    <div class="product-card-footer">
+      <span class="product-price">${{ "%.2f"|format(product.price) }}</span>
+      <span class="btn btn-sm btn-accent">View Course</span>
+    </div>
+  </div>
+</a>

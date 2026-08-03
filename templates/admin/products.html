@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Manage Products — SmartReco{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="admin-nav">
+    <a href="/admin" class="pill">Dashboard</a>
+    <a href="/admin/products" class="pill pill-active">Products</a>
+    <a href="/admin/events" class="pill">Events</a>
+    <a href="/admin/recommendations" class="pill">Recommendations</a>
+  </div>
+
+  <div class="section-header-row">
+    <h1 class="page-title">Manage Products</h1>
+    <a href="/admin/products/new" class="btn btn-accent">+ New Product</a>
+  </div>
+
+  <div class="table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th><th>Title</th><th>Category</th><th>Level</th><th>Price</th><th>Active</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.title }}</td>
+          <td>{{ p.category }}</td>
+          <td>{{ p.difficulty_level }}</td>
+          <td>${{ "%.2f"|format(p.price) }}</td>
+          <td>{% if p.is_active %}<span class="badge-active">Active</span>{% else %}<span class="badge-inactive">Inactive</span>{% endif %}</td>
+          <td class="admin-actions">
+            <a href="/admin/products/{{ p.id }}/edit" class="btn btn-sm btn-ghost">Edit</a>
+            <form action="/admin/products/{{ p.id }}/delete" method="post" onsubmit="return confirm('Deactivate this product? It will be removed from search and recommendations.');">
+              <button type="submit" class="btn btn-sm btn-warn">Deactivate</button>
+            </form>
+            <form action="/admin/products/{{ p.id }}/hard-delete" method="post" onsubmit="return confirm('Permanently delete this product and all associated events? This cannot be undone.');">
+              <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="empty-state">No products yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — SmartReco{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="admin-nav">
+    <a href="/admin" class="pill pill-active">Dashboard</a>
+    <a href="/admin/products" class="pill">Products</a>
+    <a href="/admin/events" class="pill">Events</a>
+    <a href="/admin/recommendations" class="pill">Recommendations</a>
+  </div>
+
+  <h1 class="page-title">Admin Dashboard</h1>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-value" data-value="{{ total_users }}">0</div>
+      <div class="stat-label">Total Users</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" data-value="{{ total_products }}">0</div>
+      <div class="stat-label">Active Products</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" data-value="{{ events_24h }}">0</div>
+      <div class="stat-label">Events (Last 24h)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" data-value="{{ total_recommendations }}">0</div>
+      <div class="stat-label">Recommendations Generated</div>
+    </div>
+  </div>
+</section>
+{% endblock %}

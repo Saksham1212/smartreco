@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Recommendations Explorer — SmartReco{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="admin-nav">
+    <a href="/admin" class="pill">Dashboard</a>
+    <a href="/admin/products" class="pill">Products</a>
+    <a href="/admin/events" class="pill">Events</a>
+    <a href="/admin/recommendations" class="pill pill-active">Recommendations</a>
+  </div>
+
+  <h1 class="page-title">Generated Recommendations</h1>
+
+  <div class="table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr><th>User</th><th>Narrative Preview</th><th># Products</th><th>Model</th><th>Generated</th></tr>
+      </thead>
+      <tbody>
+        {% for rec, u in rows %}
+        <tr>
+          <td>{{ u.full_name }}<br><span class="muted">{{ u.email }}</span></td>
+          <td>{{ rec.narrative[:100] }}{% if rec.narrative|length > 100 %}...{% endif %}</td>
+          <td>{{ (rec.product_ids_json|from_json)|length if rec.product_ids_json else 0 }}</td>
+          <td>{{ rec.model_used }}</td>
+          <td>{{ rec.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="empty-state">No recommendations generated yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

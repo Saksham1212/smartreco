@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Events Explorer — SmartReco{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="admin-nav">
+    <a href="/admin" class="pill">Dashboard</a>
+    <a href="/admin/products" class="pill">Products</a>
+    <a href="/admin/events" class="pill pill-active">Events</a>
+    <a href="/admin/recommendations" class="pill">Recommendations</a>
+  </div>
+
+  <h1 class="page-title">Recent Events</h1>
+  <p class="page-subtitle">Most recent 200 events across all users.</p>
+
+  <div class="table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr><th>Time</th><th>User</th><th>Event Type</th><th>Product</th><th>Search Query</th></tr>
+      </thead>
+      <tbody>
+        {% for e in events %}
+        <tr>
+          <td>{{ e.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          <td>{{ e.user.email if e.user else '—' }}</td>
+          <td><span class="pill pill-small">{{ e.event_type }}</span></td>
+          <td>{{ e.product.title if e.product else '—' }}</td>
+          <td>{{ e.search_query or '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="empty-state">No events recorded yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

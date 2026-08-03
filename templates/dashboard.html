@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — SmartReco{% endblock %}
+{% block content %}
+<section class="section">
+  <h1 class="page-title">Welcome back, {{ user.full_name.split(' ')[0] }}</h1>
+  <p class="page-subtitle">Here's what SmartReco thinks you should learn next.</p>
+
+  <div id="recommendation-widget" class="recommendation-widget">
+    <div class="skeleton-narrative"></div>
+    <div class="skeleton-cards">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  initRecommendationWidget();
+</script>
+{% endblock %}

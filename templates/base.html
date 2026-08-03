@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}SmartReco — Learn Smarter{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/main.css">
+</head>
+{% if user %}<body data-user-id="{{ user.id }}" data-user-authenticated="true"{% if product is defined and product %} data-product-id="{{ product.id }}"{% endif %}>
+{% else %}<body data-user-authenticated="false"{% if product is defined and product %} data-product-id="{{ product.id }}"{% endif %}>
+{% endif %}
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="brand">Smart<span>Reco</span></a>
+    <div class="nav-links">
+      <a href="/products">Browse</a>
+      <a href="/search">Search</a>
+    </div>
+    <div class="nav-auth">
+      {% if user %}
+      <div class="user-menu">
+        <button class="user-menu-btn" id="userMenuBtn">{{ user.full_name.split(' ')[0] }} <span class="caret">&#9662;</span></button>
+        <div class="user-menu-dropdown" id="userMenuDropdown">
+          <a href="/dashboard">Dashboard</a>
+          {% if user.is_admin %}<a href="/admin">Admin</a>{% endif %}
+          <form action="/auth/logout" method="post"><button type="submit" class="dropdown-logout">Logout</button></form>
+        </div>
+      </div>
+      {% else %}
+      <a href="/login" class="btn btn-ghost">Log In</a>
+      <a href="/register" class="btn btn-accent">Sign Up</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<div id="flash-container" class="flash-container">
+  {% if request.query_params.get('success') %}
+  <div class="flash flash-success">{{ request.query_params.get('success') }}</div>
+  {% endif %}
+  {% if request.query_params.get('error') %}
+  <div class="flash flash-error">{{ request.query_params.get('error') }}</div>
+  {% endif %}
+</div>
+
+<main class="page-content">
+{% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span>&copy; 2026 SmartReco. Behavioral AI recommendations for lifelong learners.</span>
+  </div>
+</footer>
+
+<script src="/static/js/main.js"></script>
+{% if user %}<script src="/static/js/tracker.js"></script>{% endif %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Browse Courses — SmartReco{% endblock %}
+{% block content %}
+<section class="section">
+  <h1 class="page-title">Browse Courses</h1>
+  <form method="get" action="/products" class="filter-bar">
+    <select name="category" onchange="this.form.submit()">
+      <option value="">All Categories</option>
+      {% for c in categories %}
+      <option value="{{ c }}" {% if c == selected_category %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+    <select name="difficulty_level" onchange="this.form.submit()">
+      <option value="">All Levels</option>
+      <option value="beginner" {% if selected_difficulty == 'beginner' %}selected{% endif %}>Beginner</option>
+      <option value="intermediate" {% if selected_difficulty == 'intermediate' %}selected{% endif %}>Intermediate</option>
+      <option value="advanced" {% if selected_difficulty == 'advanced' %}selected{% endif %}>Advanced</option>
+    </select>
+    <input type="number" name="min_price" placeholder="Min $" min="0" step="1" value="{{ min_price if min_price is not none else '' }}">
+    <input type="number" name="max_price" placeholder="Max $" min="0" step="1" value="{{ max_price if max_price is not none else '' }}">
+    <button type="submit" class="btn btn-accent btn-sm">Apply</button>
+    <a href="/products" class="btn btn-ghost btn-sm">Clear</a>
+  </form>
+
+  <p class="result-count">{{ total }} course{{ 's' if total != 1 else '' }} found</p>
+
+  <div class="product-grid">
+    {% for product in products %}
+      {% include "partials/product_card.html" %}
+    {% else %}
+      <p class="empty-state">No courses match your filters. Try broadening your search.</p>
+    {% endfor %}
+  </div>
+
+  {% if total_pages > 1 %}
+  <div class="pagination">
+    {% for p in range(1, total_pages + 1) %}
+      <a href="/products?page={{ p }}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if selected_difficulty %}&difficulty_level={{ selected_difficulty }}{% endif %}{% if min_price is not none %}&min_price={{ min_price }}{% endif %}{% if max_price is not none %}&max_price={{ max_price }}{% endif %}"
+         class="page-link {% if p == page %}page-link-active{% endif %}">{{ p }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

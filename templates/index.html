@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}SmartReco — Learn Smarter{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1 class="hero-title">Learn what actually moves you forward.</h1>
+  <p class="hero-subtitle">SmartReco watches how you browse and quietly builds a picture of what you're
+    trying to learn — then tells you exactly which course to take next, and why.</p>
+  <form action="/search" method="get" class="hero-search" id="searchForm">
+    <input type="search" name="q" placeholder="Search for Python, React, Kubernetes..." required minlength="1" autocomplete="off">
+    <button type="submit" class="btn btn-accent">Search</button>
+  </form>
+</section>
+
+{% if user %}
+<section class="section">
+  <h2 class="section-title">Your Recommendations</h2>
+  <div id="recommendation-widget" class="recommendation-widget">
+    <div class="skeleton-narrative"></div>
+    <div class="skeleton-cards">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section-header-row">
+    <h2 class="section-title">Browse by Category</h2>
+  </div>
+  <div class="category-pills">
+    <a href="/products" class="pill pill-active">All</a>
+    {% for c in categories %}
+    <a href="/products?category={{ c|urlencode }}" class="pill" style="border-color: {{ c|category_color }}55;">{{ c }}</a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Featured Courses</h2>
+  <div class="product-grid">
+    {% for product in featured_products %}
+      {% include "partials/product_card.html" %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  if (document.getElementById('recommendation-widget')) {
+    initRecommendationWidget();
+  }
+</script>
+{% endblock %}

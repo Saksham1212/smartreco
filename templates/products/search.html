@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Search — SmartReco{% endblock %}
+{% block content %}
+<section class="section">
+  <h1 class="page-title">Search Courses</h1>
+  <form method="get" action="/search" class="hero-search" id="searchForm">
+    <input type="search" name="q" value="{{ query }}" placeholder="Search for a topic..." required minlength="1" autocomplete="off">
+    <input type="hidden" name="mode" value="{{ mode }}">
+    <button type="submit" class="btn btn-accent">Search</button>
+  </form>
+
+  <div class="search-mode-toggle">
+    <span>Mode:</span>
+    <a href="/search?q={{ query|urlencode }}&mode=keyword" class="pill {% if mode == 'keyword' %}pill-active{% endif %}">Keyword</a>
+    <a href="/search?q={{ query|urlencode }}&mode=semantic" class="pill {% if mode == 'semantic' %}pill-active{% endif %}">Semantic (AI)</a>
+  </div>
+
+  {% if query %}
+  <p class="result-count">{{ results|length }} result{{ 's' if results|length != 1 else '' }} for "{{ query }}" using {{ mode }} search</p>
+  {% endif %}
+
+  <div class="product-grid">
+    {% for product in results %}
+      {% include "partials/product_card.html" %}
+    {% else %}
+      {% if query %}
+      <p class="empty-state">No courses found for "{{ query }}". Try the other search mode or a different term.</p>
+      {% else %}
+      <p class="empty-state">Enter a search term to find courses.</p>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

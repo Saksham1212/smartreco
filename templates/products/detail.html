@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ product.title }} — SmartReco{% endblock %}
+{% block content %}
+<section class="product-detail">
+  <div class="product-detail-header" style="background: linear-gradient(135deg, {{ product.category|category_color }}33, #0f172a);">
+    <span class="badge badge-category" style="background-color: {{ product.category|category_color }}22; color: {{ product.category|category_color }}; border-color: {{ product.category|category_color }}55;">{{ product.category }}</span>
+    <span class="badge badge-difficulty badge-{{ product.difficulty_level }}">{{ product.difficulty_level }}</span>
+    <h1 class="product-detail-title">{{ product.title }}</h1>
+    <p class="product-detail-instructor">Taught by {{ product.instructor_name }} &middot; {{ product.duration_hours }} hours</p>
+  </div>
+
+  <div class="product-detail-body" id="productDetailBody">
+    <div class="product-detail-main">
+      <h2>About this course</h2>
+      <p class="product-description">{{ product.description }}</p>
+
+      <h2>Course details</h2>
+      <ul class="product-meta-list">
+        <li><strong>Instructor:</strong> {{ product.instructor_name }}</li>
+        <li><strong>Duration:</strong> {{ product.duration_hours }} hours</li>
+        <li><strong>Level:</strong> {{ product.difficulty_level|capitalize }}</li>
+        <li><strong>Category:</strong> {{ product.category }}</li>
+        {% if product.tags %}<li><strong>Topics:</strong> {{ product.tags.replace(',', ', ') }}</li>{% endif %}
+      </ul>
+    </div>
+
+    <aside class="product-detail-sidebar">
+      <div class="pricing-card">
+        <div class="pricing-amount">${{ "%.2f"|format(product.price) }}</div>
+        <button class="btn btn-accent btn-block" id="enrollBtn" data-product-id="{{ product.id }}">Enroll Now</button>
+        <p class="pricing-note">Full lifetime access &middot; Certificate on completion</p>
+      </div>
+    </aside>
+  </div>
+
+  {% if related_products %}
+  <div class="section">
+    <h2 class="section-title">More in {{ product.category }}</h2>
+    <div class="product-grid">
+      {% for product in related_products %}
+        {% include "partials/product_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  document.getElementById('enrollBtn').addEventListener('click', function () {
+    if (window.trackEvent) {
+      window.trackEvent('add_to_cart', { product_id: {{ product.id }} });
+    }
+    alert('You have enrolled! (This is a demo action.)');
+  });
+</script>
+{% endblock %}
